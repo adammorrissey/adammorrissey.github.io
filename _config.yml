@@ -1,13 +1,8 @@
-title: Adam Morrissey # your name (or website title) here
-logo: "/images/IMG_8047.JPG?raw=true" # your photo (or logo) here
-description: > # your text below (remove <br> elements if you don't need line breaks)
-  First description 
-  <br><br>
-  Second description 
-  <br><br>
-  <a href="https://www.linkedin.com/in/example/">View My LinkedIn Profile</a> 
-  
+title: Adam Morrissey
+logo: "/images/IMG_8047.JPG?raw=true"
+description: Data & Analytics Professional specializing in insurance industry intelligence, AI adoption strategy, and value-driven reporting.
+linkedin_url: "https://www.linkedin.com/in/adammorrissey/"
 remote_theme: pages-themes/minimal@v0.2.0
 plugins:
 - jekyll-remote-theme
-google_analytics: UA-000000-0 # your Google Analytics tracking ID here
+google_analytics: UA-000000-0

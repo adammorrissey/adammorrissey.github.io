@@ -1,57 +1,482 @@
 <!DOCTYPE html>
-<html lang="{{ site.lang | default: "en-US" }}">
+<html lang="en">
 <head>
-   {% if site.google_analytics %}
-   <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
-   <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      
-      gtag('config', '{{ site.google_analytics }}');
-   </script>
-   {% endif %}
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1">
-   {% seo %}
-   <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}">
-   <!--[if lt IE 9]>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
-   <![endif]-->
+  {% if site.google_analytics %}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ site.google_analytics }}');
+  </script>
+  {% endif %}
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% seo %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:        #1a3a5c;
+      --navy-light:  #1e4976;
+      --blue:        #2563eb;
+      --blue-mid:    #3b82f6;
+      --blue-light:  #eff6ff;
+      --sky:         #0ea5e9;
+      --text:        #1f2937;
+      --text-muted:  #6b7280;
+      --border:      #e5e7eb;
+      --bg:          #ffffff;
+      --bg-alt:      #f8fafc;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 16px;
+    }
+
+    /* ── NAV ─────────────────────────────────────────── */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(255,255,255,0.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+    .nav-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 58px;
+    }
+    .nav-brand {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--navy);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+    .nav-links { display: flex; gap: 1.75rem; }
+    .nav-links a {
+      font-size: 0.825rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--blue); }
+
+    /* ── LAYOUT ──────────────────────────────────────── */
+    .site-layout {
+      display: flex;
+      min-height: calc(100vh - 58px);
+    }
+
+    /* ── SIDEBAR ─────────────────────────────────────── */
+    .sidebar {
+      width: 272px;
+      min-width: 272px;
+      background: var(--navy);
+      color: #fff;
+      padding: 2.5rem 1.75rem 3rem;
+      position: sticky;
+      top: 58px;
+      height: calc(100vh - 58px);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.15) transparent;
+    }
+
+    .profile-photo {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: top;
+      border: 3px solid rgba(255,255,255,0.25);
+      display: block;
+      margin-bottom: 1.1rem;
+    }
+
+    .sidebar-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.2rem;
+      letter-spacing: -0.01em;
+    }
+    .sidebar-role {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.55);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.15rem;
+    }
+    .sidebar-domain {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 1.5rem;
+    }
+
+    .linkedin-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #0077b5;
+      color: #fff;
+      padding: 0.45rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-decoration: none;
+      margin-bottom: 2rem;
+      transition: background 0.15s;
+      border: none;
+    }
+    .linkedin-btn:hover { background: #005c8e; }
+    .linkedin-btn svg { flex-shrink: 0; }
+
+    .sidebar-section { margin-bottom: 1.75rem; }
+    .sidebar-section-title {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 0.65rem;
+    }
+
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+    .skill-tags span {
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.88);
+      padding: 0.22rem 0.55rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.14);
+      white-space: nowrap;
+    }
+    .skill-tags.domain span {
+      background: rgba(14,165,233,0.18);
+      border-color: rgba(14,165,233,0.28);
+      color: #7dd3fc;
+    }
+    .skill-tags.goal span {
+      background: rgba(251,191,36,0.12);
+      border-color: rgba(251,191,36,0.22);
+      color: #fcd34d;
+    }
+
+    /* ── MAIN CONTENT ────────────────────────────────── */
+    .main-content {
+      flex: 1;
+      min-width: 0;
+      padding: 3rem 3.5rem 4rem;
+      max-width: 820px;
+    }
+
+    .main-content h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--blue-light);
+      letter-spacing: -0.01em;
+    }
+    .main-content h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 0.4rem;
+    }
+    .main-content p {
+      margin-bottom: 0.9rem;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+    .main-content a { color: var(--blue); text-decoration: none; }
+    .main-content a:hover { text-decoration: underline; }
+    .main-content ul {
+      margin-bottom: 1rem;
+      padding-left: 1.2rem;
+    }
+    .main-content li {
+      margin-bottom: 0.35rem;
+      font-size: 0.95rem;
+    }
+    .main-content strong { color: var(--navy); }
+
+    .content-section { margin-bottom: 3rem; }
+
+    /* ── HIGHLIGHT BOX ───────────────────────────────── */
+    .highlight-box {
+      background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .highlight-box p {
+      margin-bottom: 0;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--navy);
+      font-style: italic;
+    }
+
+    /* ── PROJECT CARDS ───────────────────────────────── */
+    .project-grid {
+      display: grid;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    .project-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+      transition: box-shadow 0.18s, border-color 0.18s, transform 0.18s;
+    }
+    .project-card:hover {
+      box-shadow: 0 4px 16px rgba(37,99,235,0.08);
+      border-color: #93c5fd;
+      transform: translateY(-1px);
+    }
+    .card-meta {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--blue-mid);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.35rem;
+    }
+    .project-card h3 { margin-bottom: 0.45rem; }
+    .project-card p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 0.85rem;
+    }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+    .card-tags span {
+      background: var(--blue-light);
+      color: var(--blue);
+      padding: 0.18rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.68rem;
+      font-weight: 600;
+    }
+
+    /* ── PERSPECTIVE CARDS ───────────────────────────── */
+    .perspective-card {
+      background: var(--bg-alt);
+      border-left: 3px solid var(--blue);
+      border-radius: 0 8px 8px 0;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 1rem;
+    }
+    .perspective-card h3 {
+      color: var(--navy);
+      margin-bottom: 0.35rem;
+      font-size: 0.95rem;
+    }
+    .perspective-card p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 0;
+    }
+
+    /* ── READING LIST ────────────────────────────────── */
+    .reading-list {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 0;
+    }
+    .reading-list li {
+      display: flex;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      align-items: flex-start;
+    }
+    .reading-list li:last-child { border-bottom: none; }
+    .reading-pub {
+      font-weight: 700;
+      color: var(--navy);
+      min-width: 160px;
+      flex-shrink: 0;
+    }
+
+    /* ── CONTACT CTA ─────────────────────────────────── */
+    .contact-cta {
+      background: var(--navy);
+      border-radius: 10px;
+      padding: 2rem 2.25rem;
+      color: #fff;
+    }
+    .contact-cta h2 {
+      color: #fff;
+      border-color: rgba(255,255,255,0.15);
+      margin-bottom: 0.75rem;
+    }
+    .contact-cta p {
+      color: rgba(255,255,255,0.75);
+      font-size: 0.9rem;
+      margin-bottom: 1.25rem;
+    }
+    .contact-cta a.cta-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--blue);
+      color: #fff;
+      padding: 0.6rem 1.2rem;
+      border-radius: 7px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .contact-cta a.cta-link:hover { background: #1d4ed8; text-decoration: none; }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    .site-footer {
+      background: #111827;
+      color: rgba(255,255,255,0.45);
+      text-align: center;
+      padding: 1.5rem 2rem;
+      font-size: 0.78rem;
+    }
+    .site-footer a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+    }
+    .site-footer a:hover { color: rgba(255,255,255,0.9); }
+
+    /* ── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 900px) {
+      .main-content { padding: 2.5rem 2.5rem 3rem; }
+    }
+
+    @media (max-width: 720px) {
+      .site-layout { flex-direction: column; }
+      .sidebar {
+        width: 100%;
+        min-width: 0;
+        position: static;
+        height: auto;
+        padding: 2rem 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        align-items: flex-start;
+      }
+      .profile-block { display: flex; flex-direction: column; }
+      .sidebar-section { margin-bottom: 0; }
+      .main-content { padding: 2rem 1.25rem 3rem; }
+      .nav-links { gap: 1rem; }
+      .nav-links a { font-size: 0.78rem; }
+      .reading-pub { min-width: 120px; }
+    }
+
+    @media (max-width: 480px) {
+      .nav-links { display: none; }
+      .contact-cta { padding: 1.5rem; }
+    }
+  </style>
 </head>
 <body>
-   <div class="wrapper">
-      <header>
-         <h1><a href="{{ "/" | absolute_url }}">{{ site.title | default: site.github.repository_name }}</a></h1>
-         {% if site.logo %}
-         <img src="{{site.logo | relative_url}}" alt="Logo" />
-         {% endif %}
-         <p>{{ site.description | default: site.github.project_tagline }}</p>
-         {% if site.github.is_project_page %}
-         <p class="view"><a href="{{ site.github.repository_url }}">View the Project on GitHub <small>{{ site.github.repository_nwo }}</small></a></p>
-         {% endif %}
-         {% if site.github.is_user_page %}
-         <p class="view"><a href="{{ site.github.owner_url }}">View My GitHub Profile</a></p>
-         {% endif %}
-         {% if site.show_downloads %}
-         <ul class="downloads">
-            <li><a href="{{ site.github.zip_url }}">Download <strong>ZIP File</strong></a></li>
-            <li><a href="{{ site.github.tar_url }}">Download <strong>TAR Ball</strong></a></li>
-            <li><a href="{{ site.github.repository_url }}">View On <strong>GitHub</strong></a></li>
-         </ul>
-         {% endif %}
-      </header>
-      <section>
-         {{ content }}
-      </section>
-      <footer>
-         {% if site.github.is_project_page %}
-         <p>This project is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a></p>
-         {% endif %}
-         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
-   </div>
-   <script src="{{ "/assets/js/scale.fix.js" | relative_url }}"></script>
+
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">Adam Morrissey</a>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#work">Work</a>
+        <a href="#perspectives">Perspectives</a>
+        <a href="#reading">Reading</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="site-layout">
+
+    <aside class="sidebar">
+      <div class="profile-block">
+        {% if site.logo %}
+        <img src="{{ site.logo | relative_url }}" alt="Adam Morrissey" class="profile-photo">
+        {% endif %}
+        <div class="sidebar-name">Adam Morrissey</div>
+        <div class="sidebar-role">Data &amp; Analytics Professional</div>
+        <div class="sidebar-domain">Insurance · AI Adoption · Value Creation</div>
+        <a href="{{ site.linkedin_url | default: '#' }}" target="_blank" rel="noopener" class="linkedin-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+          Connect on LinkedIn
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Technical Skills</div>
+        <div class="skill-tags">
+          <span>Tableau</span>
+          <span>Power BI</span>
+          <span>Excel</span>
+          <span>SQL</span>
+          <span>ETL Pipelines</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Domain Expertise</div>
+        <div class="skill-tags domain">
+          <span>Insurance Analytics</span>
+          <span>Risk Analysis</span>
+          <span>Underwriting Data</span>
+          <span>Claims Intelligence</span>
+          <span>AI Adoption</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Currently Focused On</div>
+        <div class="skill-tags goal">
+          <span>AI Value Capture</span>
+          <span>Influence Building</span>
+          <span>Data Storytelling</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      {{ content }}
+    </main>
+
+  </div>
+
+  <footer class="site-footer">
+    <p>Adam Morrissey &mdash; Data &amp; Analytics Professional &mdash;
+    <a href="{{ site.linkedin_url | default: '#' }}" target="_blank" rel="noopener">LinkedIn</a></p>
+  </footer>
+
 </body>
 </html>
